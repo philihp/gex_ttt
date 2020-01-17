@@ -1,0 +1,9 @@
+{application,gex_ttt,
+             [{applications,[kernel,stdlib,elixir,logger,gex]},
+              {description,"gex_ttt"},
+              {modules,['Elixir.GexTtt','Elixir.GexTtt.Actioner',
+                        'Elixir.GexTtt.Context','Elixir.GexTtt.Displayer',
+                        'Elixir.GexTtt.Game','Elixir.GexTtt.Player',
+                        'Elixir.GexTtt.Prompter','Elixir.GexTtt.State']},
+              {registered,[]},
+              {vsn,"0.1.0"}]}.
