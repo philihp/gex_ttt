@@ -72,14 +72,14 @@ defmodule GexTtt.State do
   end
 
   def actions(state = %State{}) do
-    for x <- 0..2, y <- 0..2, Map.get(state, key(x, y)) == nil, into: [] do
-      key(x, y)
+    for col <- 0..2, row <- 0..2, Map.get(state, key(row, col)) == nil, into: [] do
+      key(row, col)
     end
   end
 
   def feature_vector(state = %State{active_player: active_player}) do
-    for x <- 0..2, y <- 0..2, into: [] do
-      val = Map.get(state, key(x, y))
+    for col <- 0..2, row <- 0..2, into: [] do
+      val = Map.get(state, key(row, col))
 
       (val == nil && 0.5) ||
         (val == active_player && 1.0) || 0.0
