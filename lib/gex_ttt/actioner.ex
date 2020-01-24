@@ -9,6 +9,7 @@ defmodule GexTtt.Actioner do
       | state: dst_state,
         action: nil,
         actions: State.actions(dst_state),
+        active_player: State.active_player(dst_state),
         terminal: State.terminal?(dst_state),
         winner: State.winner(dst_state),
         view: Game.view(dst_state)

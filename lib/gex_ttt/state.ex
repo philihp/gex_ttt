@@ -16,12 +16,27 @@ defmodule GexTtt.State do
     active_player: 0
   )
 
-  def score(state = %State{active_player: active_player}) do
-    (winner(state) == active_player && 1.0) || 0.0
+  def score(state = %State{}) do
+    winner(state) || 0.5
   end
 
-  def terminal?(state = %State{}) do
-    !!winner(state)
+  def terminal?(
+        state = %State{
+          cell00: c00,
+          cell01: c01,
+          cell02: c02,
+          cell10: c10,
+          cell11: c11,
+          cell12: c12,
+          cell20: c20,
+          cell21: c21,
+          cell22: c22
+        }
+      ) do
+    (c00 != nil && c01 != nil && c02 != nil &&
+       c10 != nil && c11 != nil && c12 != nil &&
+       c20 != nil && c21 != nil && c22 != nil) ||
+      !!winner(state)
   end
 
   def winner(%State{
@@ -42,7 +57,7 @@ defmodule GexTtt.State do
       (c01 == c11 && c11 == c21 && c01) ||
       (c02 == c12 && c12 == c22 && c02) ||
       (c00 == c11 && c11 == c22 && c00) ||
-      (c20 == c11 && c11 == c02 && c20)
+      (c20 == c11 && c11 == c02 && c20) || nil
   end
 
   def active_player(%State{active_player: active_player}) do
