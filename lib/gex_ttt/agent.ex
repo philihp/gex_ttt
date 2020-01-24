@@ -5,14 +5,21 @@ defmodule GexTtt.Agent do
     %Context{
       context
       | action:
-          Enum.max_by(State.actions(state), fn action ->
-            minimax(State.advance(state, action))
-            |> IO.inspect(label: action)
+          State.actions(state)
+          |> Enum.map(fn action ->
+            Task.async(fn ->
+              dst = State.advance(state, action)
+              {minimax(dst, 0, State.terminal?(dst), false), action}
+            end)
           end)
+          |> Enum.map(fn task ->
+            Task.await(task)
+            |> IO.inspect()
+          end)
+          |> Enum.max()
+          |> elem(1)
     }
   end
-
-  def minimax(state, depth \\ 0, terminal \\ false, maximizing \\ false)
 
   def minimax(state, _depth, true, _maximizing) do
     State.score(state)
@@ -25,18 +32,24 @@ defmodule GexTtt.Agent do
   def minimax(state, depth, false, false) do
     State.actions(state)
     |> Enum.map(fn action ->
+      # Task.async(fn ->
       dst = State.advance(state, action)
       minimax(dst, depth + 1, State.terminal?(dst), true)
     end)
+    # end)
+    # |> Enum.map(fn task -> Task.await(task) end)
     |> Enum.min()
   end
 
   def minimax(state, depth, false, true) do
     State.actions(state)
     |> Enum.map(fn action ->
+      # Task.async(fn ->
       dst = State.advance(state, action)
       minimax(dst, depth + 1, State.terminal?(dst), false)
     end)
+    # end)
+    # |> Enum.map(fn task -> Task.await(task) end)
     |> Enum.max()
   end
 end
