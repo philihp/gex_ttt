@@ -21,3 +21,6 @@ erl_crash.dump
 
 # Ignore package tarball (built via "mix hex.build").
 gex_ttt-*.tar
+
+# Elixir stuff
+/.elixir_ls/
