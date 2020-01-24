@@ -8,6 +8,7 @@ defmodule GexTtt.Agent do
           Enum.map(State.actions(state), fn action ->
             {minimax(State.advance(state, action)), action}
           end)
+          |> IO.inspect(label: :possible_moves)
           |> Enum.max()
           |> elem(1)
     }
