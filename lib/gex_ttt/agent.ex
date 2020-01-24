@@ -5,12 +5,10 @@ defmodule GexTtt.Agent do
     %Context{
       context
       | action:
-          Enum.map(State.actions(state), fn action ->
-            {minimax(State.advance(state, action)), action}
+          Enum.max_by(State.actions(state), fn action ->
+            minimax(State.advance(state, action))
+            |> IO.inspect(label: action)
           end)
-          |> IO.inspect(label: :possible_moves)
-          |> Enum.max()
-          |> elem(1)
     }
   end
 
